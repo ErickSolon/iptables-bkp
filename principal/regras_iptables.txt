@@ -1,0 +1,17 @@
+-P INPUT DROP
+-P FORWARD DROP
+-P OUTPUT DROP
+-A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+-A INPUT -i lo -j ACCEPT
+-A INPUT -m pkttype --pkt-type broadcast -j DROP
+-A INPUT -d 192.168.18.234/32 -m conntrack --ctstate NEW -j LOG --log-prefix "TENTATIVA DE CONEXÃO (IPV4):"
+-A INPUT -p tcp -m tcp --sport 53 -j ACCEPT
+-A INPUT -p tcp -m tcp --sport 80 -j ACCEPT
+-A INPUT -p tcp -m tcp --sport 443 -j ACCEPT
+-A INPUT -p udp -m udp --sport 53 -j ACCEPT
+-A OUTPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+-A OUTPUT -o lo -j ACCEPT
+-A OUTPUT -p udp -m udp --dport 53 -j ACCEPT
+-A OUTPUT -p tcp -m tcp --dport 80 -j ACCEPT
+-A OUTPUT -p tcp -m tcp --dport 443 -j ACCEPT
+-A OUTPUT -p tcp -m tcp --dport 53 -j ACCEPT
